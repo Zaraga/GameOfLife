@@ -7,7 +7,7 @@ DrawingPanel::DrawingPanel(wxFrame* parent) : wxPanel(parent, wxID_ANY, wxPoint(
 	SetDoubleBuffered(true);
 
 	gridSize = 15;
-	cellSize = 10;
+	cellSize = 20;
 
 	this->Bind(wxEVT_PAINT, &DrawingPanel::OnPaint, this);
 }
@@ -28,10 +28,17 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 
 	//context->DrawRectangle(10, 10, 100, 100);
 
+	int panelWidth, panelHeight;
+	GetParent()->GetSize(&panelWidth, &panelHeight);
+	gridSize = std::min(panelWidth, panelHeight) / cellSize;
+
+	int cellWidth = panelWidth / gridSize;
+	int cellHeight = panelHeight / gridSize;
+
 	for (int row = 0; row < gridSize; row++) {
 		for (int col = 0; col < gridSize; col++) {
-			int x = col * cellSize;
-			int y = row * cellSize;
+			int x = col * cellWidth;
+			int y = row * cellHeight;
 			context->DrawRectangle(x, y, cellSize, cellSize);
 		}
 	}
