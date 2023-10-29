@@ -1,5 +1,6 @@
 #include "App.h"
 #include "MainWindow.h"
+#include "DrawingPanel.h"
 
 wxIMPLEMENT_APP(App);
 
@@ -12,7 +13,8 @@ App::~App() {
 }
 
 bool App::OnInit() {
-	MainWindow* mainWindow = new MainWindow();
+	MainWindow* mainWindow = new MainWindow();	
 	mainWindow->Show();
+
 	return true;
 }
