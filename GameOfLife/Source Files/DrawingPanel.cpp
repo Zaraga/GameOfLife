@@ -6,6 +6,9 @@ DrawingPanel::DrawingPanel(wxFrame* parent) : wxPanel(parent, wxID_ANY, wxPoint(
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	SetDoubleBuffered(true);
 
+	gridSize = 15;
+	cellSize = 10;
+
 	this->Bind(wxEVT_PAINT, &DrawingPanel::OnPaint, this);
 }
 
@@ -23,5 +26,14 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	context->SetPen(*wxBLACK);
 	context->SetBrush(*wxWHITE);
 
-	context->DrawRectangle(10, 10, 100, 100);
+	//context->DrawRectangle(10, 10, 100, 100);
+
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			int x = col * cellSize;
+			int y = row * cellSize;
+			context->DrawRectangle(x, y, cellSize, cellSize);
+		}
+	}
 }
+
