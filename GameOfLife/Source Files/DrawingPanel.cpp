@@ -2,7 +2,7 @@
 #include "wx/graphics.h"
 #include "wx/dcbuffer.h"
 
-DrawingPanel::DrawingPanel(wxFrame* parent) : wxPanel(parent, wxID_ANY, wxPoint(0, 0), wxSize(200, 200)) {
+DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size) : wxPanel(parent, wxID_ANY, wxPoint(0, 0), size) {
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	SetDoubleBuffered(true);
 
@@ -27,20 +27,15 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	context->SetBrush(*wxWHITE);
 
 	//context->DrawRectangle(10, 10, 100, 100);
-
-	int panelWidth, panelHeight;
-	GetParent()->GetSize(&panelWidth, &panelHeight);
-	gridSize = std::min(panelWidth, panelHeight) / cellSize;
-
-	int cellWidth = panelWidth / gridSize;
-	int cellHeight = panelHeight / gridSize;
-
-	for (int row = 0; row < gridSize; row++) {
-		for (int col = 0; col < gridSize; col++) {
-			int x = col * cellWidth;
-			int y = row * cellHeight;
-			context->DrawRectangle(x, y, cellSize, cellSize);
+		
+	float cellWidth = GetSize().x / (float)gridSize;
+	float cellHeight = GetSize().y / (float)gridSize;
+	for (int i = 0; i < gridSize; i++) {
+		for (int j = 0; j < gridSize; j++) {
+			context->DrawRectangle(cellWidth * i, cellHeight * j, cellWidth, cellHeight);
 		}
 	}
+
+
 }
 
