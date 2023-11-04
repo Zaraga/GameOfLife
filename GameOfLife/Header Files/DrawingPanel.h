@@ -4,11 +4,12 @@ class DrawingPanel : public wxPanel
 {
 private:
 	int gridSize;
-	int cellSize;
 	void OnPaint(wxPaintEvent& event);
+	void OnSizeChanged(wxSizeEvent& event);
 public:
-	DrawingPanel(wxFrame* Mainwindow, wxSize size);
+	DrawingPanel(wxFrame* Mainwindow, wxSize size, int gridSize);
 	~DrawingPanel();
+	void SetGridSize(int size);
 	
 	
 };

@@ -1,17 +1,19 @@
 #include "DrawingPanel.h"
 #include "wx/graphics.h"
 #include "wx/dcbuffer.h"
+#include <MainWindow.h>
 
-DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size) : wxPanel(parent, wxID_ANY, wxPoint(0, 0), size) {
+DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size, int gridSize) : wxPanel(parent, wxID_ANY, wxPoint(0, 0), size), gridSize(gridSize) {
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	SetDoubleBuffered(true);
 
-	gridSize = 15;
-	cellSize = 20;
+	
+	
 
 	this->Bind(wxEVT_PAINT, &DrawingPanel::OnPaint, this);
-}
 
+	this->Bind(wxEVT_SIZE, &DrawingPanel::OnSizeChanged, this);
+}
 DrawingPanel::~DrawingPanel() {
 
 }
@@ -26,7 +28,7 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	context->SetPen(*wxBLACK);
 	context->SetBrush(*wxWHITE);
 
-	//context->DrawRectangle(10, 10, 100, 100);
+	//context->ClearRectangle(0, 0, GetSize().x, GetSize().y);
 		
 	float cellWidth = GetSize().x / (float)gridSize;
 	float cellHeight = GetSize().y / (float)gridSize;
@@ -35,7 +37,11 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 			context->DrawRectangle(cellWidth * i, cellHeight * j, cellWidth, cellHeight);
 		}
 	}
-
-
 }
+
+void DrawingPanel::OnSizeChanged(wxSizeEvent& event) {
+	Refresh();
+	event.Skip();
+}
+
 
