@@ -179,3 +179,4 @@ void MainWindow::OnClear(wxCommandEvent& event) {
 void MainWindow::OnTimer(wxTimerEvent& event) {
 	AdvanceToNextGeneration(); // Call your method to advance the game
 }
+ 
