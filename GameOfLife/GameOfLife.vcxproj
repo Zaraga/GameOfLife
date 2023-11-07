@@ -81,7 +81,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Source Files;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Header Files;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Icons;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Source Files;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Header Files;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Source Files;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Header Files;$(SolutionDir)Binaries\include;$(SolutionDir)Binaries\include\msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Icons;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Source Files;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Header Files;$(SolutionDir)Binaries\include;$(SolutionDir)Binaries\include\msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
