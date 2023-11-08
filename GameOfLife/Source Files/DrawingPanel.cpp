@@ -50,7 +50,7 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 
 void DrawingPanel::OnSizeChanged(wxSizeEvent& event) {
 	Refresh();
-	event.Skip();
+	//event.Skip();
 }
 
 void DrawingPanel::SetGridSize(int size) {

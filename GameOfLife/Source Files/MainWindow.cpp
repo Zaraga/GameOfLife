@@ -79,7 +79,8 @@ void MainWindow::OnPlay(wxCommandEvent& event) {
 	int pos = toolBar->GetToolPos(playToolId);
 	toolBar->DeleteTool(playToolId);
 	toolBar->InsertTool(pos, pauseToolId,"Pause", pauseBitmap);
-	toolBar->Realize();
+	toolBar->Realize();	
+	this->Layout(); // very important for post play status bar to stick around
 }
 
 void MainWindow::OnPause(wxCommandEvent& event) {
@@ -89,6 +90,7 @@ void MainWindow::OnPause(wxCommandEvent& event) {
 	toolBar->DeleteTool(pauseToolId);
 	toolBar->InsertTool(pos, playToolId, "Play", playBitmap);
 	toolBar->Realize();
+	this->Layout(); // very important for post pause status bar to stick around
 }
 
 int MainWindow::CalculateNeighborCount(int row, int column) {
@@ -155,8 +157,9 @@ void MainWindow::AdvanceToNextGeneration() {
 	++generation;
 
 	// Update the status bar and refresh the drawing panel
-	UpdateStatusBar();
+	
 	_drawingPanel->Refresh();
+	UpdateStatusBar();
 }
 
 void MainWindow::OnClear(wxCommandEvent& event) {
