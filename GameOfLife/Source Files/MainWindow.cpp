@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "GameSettings.h"
 #include "play.xpm"
 #include "trash.xpm"
 #include "pause.xpm"
@@ -23,11 +24,15 @@ wxEND_EVENT_TABLE()
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(750, 300), wxSize(500, 500)) {
 	InitializeGameBoard();
 
+	GameSettings settings;
 	gameTimer = new wxTimer(this, wxID_ANY); // Initialize the timer
-	timerInterval = 50; // Set the timer interval to 50ms
+	//gameTimer->SetTimerInterval(&settings);
 
-	_drawingPanel = new DrawingPanel(this, wxDefaultSize, gridSize, gameBoard);
-	_drawingPanel->SetGridSize(gridSize);
+	
+
+	_drawingPanel = new DrawingPanel(this, wxDefaultSize, settings.gridSize, gameBoard);
+	_drawingPanel->SetSettings(&settings);
+	_drawingPanel->SetGridSize(settings.gridSize);
 	//Show(true);
 	
 	_sizer = new wxBoxSizer(wxVERTICAL);
@@ -57,6 +62,7 @@ MainWindow::~MainWindow() {
 	delete gameTimer; // Clean up the timer
 }
 
+
 void MainWindow::OnSizeChanged(wxSizeEvent& event) {
 	_drawingPanel->SetSize(event.GetSize());
 	_drawingPanel->Refresh();
@@ -65,7 +71,7 @@ void MainWindow::OnSizeChanged(wxSizeEvent& event) {
 }
 
 void MainWindow::InitializeGameBoard() {
-	gameBoard.resize(gridSize, std::vector<bool>(gridSize, false)); // Resize with default value of false
+	gameBoard.resize(settings.gridSize, std::vector<bool>(settings.gridSize, false)); // Resize with default value of false
 }
 
 void MainWindow::UpdateStatusBar() {
@@ -74,7 +80,7 @@ void MainWindow::UpdateStatusBar() {
 }
 
 void MainWindow::OnPlay(wxCommandEvent& event) {
-	gameTimer->Start(timerInterval); // Start the timer with the set interval
+	gameTimer->Start(settings.timerInterval); // Start the timer with the set interval
 	wxToolBarToolBase *playTool = toolBar->FindById(playToolId);
 	int pos = toolBar->GetToolPos(playToolId);
 	toolBar->DeleteTool(playToolId);
@@ -106,8 +112,8 @@ int MainWindow::CalculateNeighborCount(int row, int column) {
 			int neighborColumn = column + j;
 
 			// Check if the neighbor indices are within the bounds of the grid
-			if (neighborRow >= 0 && neighborRow < gridSize &&
-				neighborColumn >= 0 && neighborColumn < gridSize) {
+			if (neighborRow >= 0 && neighborRow < settings.gridSize &&
+				neighborColumn >= 0 && neighborColumn < settings.gridSize) {
 				// Increment count if the neighbor is alive
 				if (gameBoard[neighborRow][neighborColumn]) {
 					++count;
@@ -120,12 +126,12 @@ int MainWindow::CalculateNeighborCount(int row, int column) {
 }
 
 void MainWindow::AdvanceToNextGeneration() {
-	std::vector<std::vector<bool>> sandbox(gridSize, std::vector<bool>(gridSize, false));
+	std::vector<std::vector<bool>> sandbox(settings.gridSize, std::vector<bool>(settings.gridSize, false));
 	int newLivingCells = 0;
 
 	// Iterate through the entire board
-	for (int row = 0; row < gridSize; ++row) {
-		for (int column = 0; column < gridSize; ++column) {
+	for (int row = 0; row < settings.gridSize; ++row) {
+		for (int column = 0; column < settings.gridSize; ++column) {
 			int liveNeighbors = CalculateNeighborCount(row, column);
 			bool cellCurrentlyAlive = gameBoard[row][column];
 

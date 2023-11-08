@@ -24,6 +24,7 @@
     <ClCompile Include="Source Files\MainWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameSettings.h" />
     <ClInclude Include="Header Files\App.h" />
     <ClInclude Include="Header Files\DrawingPanel.h" />
     <ClInclude Include="Header Files\MainWindow.h" />
@@ -119,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Icons;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Source Files;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Header Files;$(SolutionDir)Binaries\include;$(SolutionDir)Binaries\include\msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Icons;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Source Files;C:\Users\cay23\Desktop\School\COS 119\conway-s-game-of-life-11-23-Zaraga-main\GameOfLife\Header Files;$(SolutionDir)Binaries\include;$(SolutionDir)Binaries\include\msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
