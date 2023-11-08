@@ -1,4 +1,4 @@
-
+#pragma once
 #include <wx/colour.h>
 
 struct GameSettings {
@@ -36,6 +36,8 @@ struct GameSettings {
         deadCellBlue = color.Blue();
         deadCellAlpha = color.Alpha();
     }
+
+    GameSettings() = default;
 };
 
 extern GameSettings settings;

@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include "GameSettings.h"
 #include "play.xpm"
 #include "trash.xpm"
 #include "pause.xpm"
@@ -24,13 +23,13 @@ wxEND_EVENT_TABLE()
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(750, 300), wxSize(500, 500)) {
 	InitializeGameBoard();
 
-	GameSettings settings;
+	
 	gameTimer = new wxTimer(this, wxID_ANY); // Initialize the timer
 	//gameTimer->SetTimerInterval(&settings);
-
+	int gridSize = settings.gridSize;
 	
 
-	_drawingPanel = new DrawingPanel(this, wxDefaultSize, settings.gridSize, gameBoard);
+	_drawingPanel = new DrawingPanel(this, wxDefaultSize, gridSize, gameBoard);
 	_drawingPanel->SetSettings(&settings);
 	_drawingPanel->SetGridSize(settings.gridSize);
 	//Show(true);

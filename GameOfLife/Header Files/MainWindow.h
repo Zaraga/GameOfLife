@@ -33,6 +33,7 @@ public:
 	void OnClear(wxCommandEvent& event);
 	void OnTimer(wxTimerEvent& event);
 	void SetTimerInterval(GameSettings* timerInterval);
+	GameSettings settings;
 	wxDECLARE_EVENT_TABLE();
 };
 

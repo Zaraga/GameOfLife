@@ -12,16 +12,18 @@ DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size, int gridSize, std::vect
 	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), size), gridSize(gridSize), gameBoard(gameBoard) {
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	SetDoubleBuffered(true);
-
+		
 	
-	(wxEVT_LEFT_UP, &DrawingPanel::OnMouseUp, this);
-
-	(wxEVT_PAINT, &DrawingPanel::OnPaint, this);
-
-	(wxEVT_SIZE, &DrawingPanel::OnSizeChanged, this);
 }
 DrawingPanel::~DrawingPanel() {
 
+}
+
+void DrawingPanel::SetSettings(GameSettings* settings) {
+	this->settings = settings;
+	if (settings != nullptr) {
+		this->gridSize = settings->gridSize;
+	}
 }
 
 void DrawingPanel::OnPaint(wxPaintEvent& event) {
