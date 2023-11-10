@@ -9,7 +9,7 @@ EVT_LEFT_UP(DrawingPanel::OnMouseUp)
 wxEND_EVENT_TABLE()
 
 DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size, int gridSize, std::vector<std::vector<bool>>&gameBoard) 
-	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), size), gridSize(gridSize), gameBoard(gameBoard) {
+	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), size), gridSize(gridSize), gameBoard(gameBoard), settings(nullptr) {
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	SetDoubleBuffered(true);
 	

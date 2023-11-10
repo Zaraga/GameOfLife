@@ -9,7 +9,8 @@
 enum {
 	playToolId = 10001, //  unique ID for play tool
 	clearToolId = 10002, // unique ID for clear tool
-	pauseToolId = 10003 // unique ID for pause tool
+	pauseToolId = 10003, // unique ID for pause tool
+	ID_OpenSettings = 10004 // unique ID for Settings Menu
 };
 
 wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
@@ -18,11 +19,21 @@ EVT_TOOL(clearToolId, MainWindow::OnClear)
 EVT_TOOL(playToolId, MainWindow::OnPlay)
 EVT_TOOL(pauseToolId, MainWindow::OnPause)
 EVT_TIMER(wxID_ANY, MainWindow::OnTimer)
+EVT_MENU(ID_OpenSettings, MainWindow::OnOpenSettings)
 wxEND_EVENT_TABLE()
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(750, 300), wxSize(500, 500)) {
 	InitializeGameBoard();
 	
+	// Create Menu Bar
+	wxMenuBar* menuBar = new wxMenuBar();
+	// Create the Options menu
+	wxMenu* optionsMenu = new wxMenu();
+	optionsMenu->Append(ID_OpenSettings, "&Settings");
+	// Add the Options menu to the menu bar
+	menuBar->Append(optionsMenu, "&Options");
+	// Set the menu bar for the frame
+	SetMenuBar(menuBar);
 	
 	gameTimer = new wxTimer(this, wxID_ANY); // Initialize the timer
 	//gameTimer->SetTimerInterval(&settings);
@@ -61,6 +72,16 @@ MainWindow::~MainWindow() {
 	delete gameTimer; // Clean up the timer
 }
 
+void MainWindow::OnOpenSettings(wxCommandEvent& event) {
+	// Assume settingsDialog is a class that inherits from wxDialog and has a constructor that accepts a GameSettings pointer
+	SettingsDialog settingsDialog(this, wxID_ANY, "Settings", &settings);
+	if (settingsDialog.ShowModal() == wxID_OK) {
+		// The user clicked OK, update your main window as needed
+		InitializeGameBoard(); // Re-initialize the game board if needed
+		_drawingPanel->Refresh(); // Refresh the drawing panel to reflect any changes
+	}
+	// No need to do anything if Cancel was clicked, as the dialog will have made no changes to settings
+}
 
 void MainWindow::OnSizeChanged(wxSizeEvent& event) {
 	_drawingPanel->SetSize(event.GetSize());

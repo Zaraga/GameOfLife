@@ -3,6 +3,7 @@
 #include "DrawingPanel.h"
 #include <vector>
 #include "GameSettings.h"
+#include "SettingsDialog.h"
 
 class MainWindow : public wxFrame
 {
@@ -33,6 +34,7 @@ public:
 	void OnClear(wxCommandEvent& event);
 	void OnTimer(wxTimerEvent& event);
 	void SetTimerInterval(GameSettings* timerInterval);//GameSettings timerInterval;  // Interval for the timer in milliseconds	
+	void OnOpenSettings(wxCommandEvent& event);
 	wxDECLARE_EVENT_TABLE();
 };
 

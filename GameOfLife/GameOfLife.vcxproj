@@ -22,12 +22,14 @@
     <ClCompile Include="Source Files\App.cpp" />
     <ClCompile Include="Source Files\DrawingPanel.cpp" />
     <ClCompile Include="Source Files\MainWindow.cpp" />
+    <ClCompile Include="Source Files\SettingsDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="Header Files\App.h" />
     <ClInclude Include="Header Files\DrawingPanel.h" />
     <ClInclude Include="Header Files\MainWindow.h" />
+    <ClInclude Include="Header Files\SettingsDialog.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -16,6 +16,7 @@ private:
     GameSettings* settings;
     int gridSize;
     
+    
 
 public:
     DrawingPanel(wxFrame* MainWindow, wxSize size, int gridSize, std::vector<std::vector<bool>>& gameBoard);
