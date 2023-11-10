@@ -5,9 +5,12 @@
 #include "wx/clrpicker.h"
 #include "GameSettings.h"
 
+class MainWindow;
+
 class SettingsDialog : public wxDialog {
+    MainWindow* mainWin;
 public:
-    SettingsDialog(wxWindow* MainWindow, wxWindowID id, const wxString& title, GameSettings* settings);
+    SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxString& title, GameSettings* settings);
     ~SettingsDialog();
     // Event handlers for OK and Cancel buttons
     void OnOk(wxCommandEvent& event);

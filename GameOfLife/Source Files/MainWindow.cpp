@@ -72,6 +72,21 @@ MainWindow::~MainWindow() {
 	delete gameTimer; // Clean up the timer
 }
 
+void MainWindow::UpdateGameBoardSize(int gridSize) {
+	if (isGameRunning) {
+		wxCommandEvent event(wxEVT_TOOL, pauseToolId);
+		wxPostEvent(this, event);
+	}
+
+	gameBoard.resize(gridSize);
+	for (auto& row : gameBoard) {
+		row.resize(gridSize, false);
+	}
+
+	_drawingPanel->SetGridSize(gridSize);
+	_drawingPanel->Refresh();
+}
+
 void MainWindow::OnOpenSettings(wxCommandEvent& event) {
 	// Assume settingsDialog is a class that inherits from wxDialog and has a constructor that accepts a GameSettings pointer
 	SettingsDialog settingsDialog(this, wxID_ANY, "Settings", &settings);
@@ -84,8 +99,10 @@ void MainWindow::OnOpenSettings(wxCommandEvent& event) {
 }
 
 void MainWindow::OnSizeChanged(wxSizeEvent& event) {
-	_drawingPanel->SetSize(event.GetSize());
-	_drawingPanel->Refresh();
+	if (_drawingPanel) {
+		_drawingPanel->SetSize(event.GetSize());
+		_drawingPanel->Refresh();
+	}
 	//this->Layout();
 	event.Skip();
 }
@@ -101,6 +118,7 @@ void MainWindow::UpdateStatusBar() {
 
 void MainWindow::OnPlay(wxCommandEvent& event) {
 	gameTimer->Start(settings.timerInterval); // Start the timer with the set interval
+	isGameRunning = true;
 	wxToolBarToolBase *playTool = toolBar->FindById(playToolId);
 	int pos = toolBar->GetToolPos(playToolId);
 	toolBar->DeleteTool(playToolId);
@@ -111,6 +129,7 @@ void MainWindow::OnPlay(wxCommandEvent& event) {
 
 void MainWindow::OnPause(wxCommandEvent& event) {
 	gameTimer->Stop(); // Stop the timer
+	isGameRunning = false;
 	wxToolBarToolBase *pauseTool = toolBar->FindById(pauseToolId);
 	int pos = toolBar->GetToolPos(pauseToolId);
 	toolBar->DeleteTool(pauseToolId);

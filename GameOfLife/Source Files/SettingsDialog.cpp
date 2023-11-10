@@ -6,8 +6,8 @@ EVT_BUTTON(wxID_OK, SettingsDialog::OnOk)
 EVT_BUTTON(wxID_CANCEL, SettingsDialog::OnCancel)
 wxEND_EVENT_TABLE()
 
-SettingsDialog::SettingsDialog(wxWindow* parent, wxWindowID id, const wxString& title, GameSettings* settings)
-    : wxDialog(parent, id, title), settings(settings) {
+SettingsDialog::SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxString& title, GameSettings* settings)
+    : wxDialog(mainWin, id, title), mainWin(mainWin), settings(settings) {
 
     wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -35,6 +35,7 @@ SettingsDialog::SettingsDialog(wxWindow* parent, wxWindowID id, const wxString& 
     mainSizer->Fit(this);
     mainSizer->SetSizeHints(this);
 }
+
 SettingsDialog::~SettingsDialog() {
 
 }
@@ -43,6 +44,8 @@ void SettingsDialog::OnOk(wxCommandEvent& event) {
     // Validate and save settings
     if (settings) {
         settings->gridSize = gridSizeCtrl->GetValue();
+        int newGridSize = gridSizeCtrl->GetValue();
+        mainWin->UpdateGameBoardSize(newGridSize);
         // Similar for other settings...
     }
     EndModal(wxID_OK); // Ends the dialog and returns wxID_OK

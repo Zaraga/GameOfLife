@@ -20,6 +20,7 @@ private:
 	void UpdateStatusBar(); // Method to update the status bar text
 	wxBitmap playBitmap;
 	wxBitmap pauseBitmap;
+	bool isGameRunning = false;
 
 public:
 	MainWindow();
@@ -35,6 +36,7 @@ public:
 	void OnTimer(wxTimerEvent& event);
 	void SetTimerInterval(GameSettings* timerInterval);//GameSettings timerInterval;  // Interval for the timer in milliseconds	
 	void OnOpenSettings(wxCommandEvent& event);
+	void UpdateGameBoardSize(int gridSize);
 	wxDECLARE_EVENT_TABLE();
 };
 
