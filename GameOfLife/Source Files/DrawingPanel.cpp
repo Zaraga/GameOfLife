@@ -12,7 +12,7 @@ DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size, int gridSize, std::vect
 	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), size), gridSize(gridSize), gameBoard(gameBoard) {
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	SetDoubleBuffered(true);
-		
+	
 	
 }
 DrawingPanel::~DrawingPanel() {
@@ -23,6 +23,8 @@ void DrawingPanel::SetSettings(GameSettings* settings) {
 	this->settings = settings;
 	if (settings != nullptr) {
 		this->gridSize = settings->gridSize;
+		this->currentLivingColor = settings->GetLivingCellColor();
+		this->currentDeadColor = settings->GetDeadCellColor();
 	}
 }
 
@@ -43,7 +45,7 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	for (int i = 0; i < gridSize; i++) {
 		for (int j = 0; j < gridSize; j++) {
 			// Set the brush depending on the cell's state
-			context->SetBrush(gameBoard[j][i] ? *wxLIGHT_GREY_BRUSH : *wxWHITE_BRUSH);
+			context->SetBrush(gameBoard[j][i] ? currentLivingColor : currentDeadColor);
 			context->DrawRectangle(cellWidth * i, cellHeight * j, cellWidth, cellHeight);
 		}
 	}
@@ -77,5 +79,6 @@ void DrawingPanel::OnMouseUp(wxMouseEvent& event) {
 		Refresh(); // Will trigger the OnPaint event to redraw the panel		
 	}
 }
+
 
 

@@ -1,8 +1,10 @@
 #pragma once
 #include <wx/colour.h>
+//#include "MainWindow.h"
+//#include "DrawingPanel.h"
 
 struct GameSettings {
-    unsigned int livingCellRed = 128;
+    unsigned int livingCellRed = 195;
     unsigned int livingCellGreen = 128;
     unsigned int livingCellBlue = 128;
     unsigned int livingCellAlpha = 255;
@@ -14,6 +16,7 @@ struct GameSettings {
 
     int gridSize = 15;
     int timerInterval = 50;
+    
 
     wxColor GetLivingCellColor() const {
         return wxColor(livingCellRed, livingCellGreen, livingCellBlue, livingCellAlpha);

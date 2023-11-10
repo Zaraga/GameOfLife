@@ -13,6 +13,7 @@ App::~App() {
 }
 
 bool App::OnInit() {
+	GameSettings settings;
 	MainWindow* mainWindow = new MainWindow();	
 	mainWindow->Show();
 

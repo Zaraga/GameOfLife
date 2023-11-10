@@ -22,7 +22,7 @@ wxEND_EVENT_TABLE()
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(750, 300), wxSize(500, 500)) {
 	InitializeGameBoard();
-
+	
 	
 	gameTimer = new wxTimer(this, wxID_ANY); // Initialize the timer
 	//gameTimer->SetTimerInterval(&settings);

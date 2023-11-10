@@ -15,6 +15,7 @@ private:
     void OnMouseUp(wxMouseEvent& event); // Mouse event handler method
     GameSettings* settings;
     int gridSize;
+    
 
 public:
     DrawingPanel(wxFrame* MainWindow, wxSize size, int gridSize, std::vector<std::vector<bool>>& gameBoard);
@@ -22,6 +23,8 @@ public:
     void SetGridSize(int size);
     void SetSettings(GameSettings* settings);
     //int gridSize = settings.gridSize;
+    wxColor currentLivingColor;
+    wxColor currentDeadColor;
     wxDECLARE_EVENT_TABLE();
 };
 

@@ -15,8 +15,7 @@ private:
 	int generation = 0; // Add this to track the generation count
 	int livingCells = 0; // Add this to track the living cells count
 	wxStatusBar* statusBar = nullptr; // Add this to reference the status bar
-	wxTimer* gameTimer; // Pointer to the wxTimer
-	//GameSettings timerInterval;  // Interval for the timer in milliseconds
+	wxTimer* gameTimer; // Pointer to the wxTimer	
 	void UpdateStatusBar(); // Method to update the status bar text
 	wxBitmap playBitmap;
 	wxBitmap pauseBitmap;
@@ -24,6 +23,7 @@ private:
 public:
 	MainWindow();
 	~MainWindow();	
+	GameSettings settings;
 	void OnSizeChanged(wxSizeEvent& event);
 	void InitializeGameBoard();
 	void OnPlay(wxCommandEvent& event);
@@ -32,8 +32,7 @@ public:
 	void AdvanceToNextGeneration();
 	void OnClear(wxCommandEvent& event);
 	void OnTimer(wxTimerEvent& event);
-	void SetTimerInterval(GameSettings* timerInterval);
-	GameSettings settings;
+	void SetTimerInterval(GameSettings* timerInterval);//GameSettings timerInterval;  // Interval for the timer in milliseconds	
 	wxDECLARE_EVENT_TABLE();
 };
 
