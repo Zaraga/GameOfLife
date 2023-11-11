@@ -27,6 +27,9 @@ public:
     //int gridSize = settings.gridSize;
     wxColor currentLivingColor;
     wxColor currentDeadColor;
+    bool isNeighborCount;
+    void UpdateNeighborCounts(std::vector<std::vector<int>>& counts);
+    std::vector<std::vector<int>> neighborCounts;
     wxDECLARE_EVENT_TABLE();
 };
 

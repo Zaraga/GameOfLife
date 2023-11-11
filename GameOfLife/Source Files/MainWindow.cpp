@@ -20,6 +20,7 @@ EVT_TOOL(playToolId, MainWindow::OnPlay)
 EVT_TOOL(pauseToolId, MainWindow::OnPause)
 EVT_TIMER(wxID_ANY, MainWindow::OnTimer)
 EVT_MENU(ID_OpenSettings, MainWindow::OnOpenSettings)
+
 wxEND_EVENT_TABLE()
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(750, 300), wxSize(500, 500)) {
@@ -31,9 +32,10 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(75
 	wxMenu* optionsMenu = new wxMenu();
 	optionsMenu->Append(ID_OpenSettings, "&Settings");
 	// Add the Options menu to the menu bar
-	menuBar->Append(optionsMenu, "&Options");
+	menuBar->Append(optionsMenu, "&Options");	
 	// Set the menu bar for the frame
 	SetMenuBar(menuBar);
+
 	
 	gameTimer = new wxTimer(this, wxID_ANY); // Initialize the timer
 	//gameTimer->SetTimerInterval(&settings);
@@ -94,6 +96,8 @@ void MainWindow::UpdateGameBoardSize(int gridSize) {
 	_drawingPanel->Refresh();
 }
 
+
+
 void MainWindow::OnOpenSettings(wxCommandEvent& event) {
 	// Assume settingsDialog is a class that inherits from wxDialog and has a constructor that accepts a GameSettings pointer
 	SettingsDialog settingsDialog(this, wxID_ANY, "Settings", &settings);
@@ -116,6 +120,7 @@ void MainWindow::OnSizeChanged(wxSizeEvent& event) {
 
 void MainWindow::InitializeGameBoard() {
 	gameBoard.resize(settings.gridSize, std::vector<bool>(settings.gridSize, false)); // Resize with default value of false
+	neighborCounts.resize(settings.gridSize, std::vector<int>(settings.gridSize, 0));
 }
 
 void MainWindow::UpdateStatusBar() {
@@ -171,14 +176,27 @@ int MainWindow::CalculateNeighborCount(int row, int column) {
 	return count;
 }
 
+
+std::vector<std::vector<int>> MainWindow::CalculateAllNeighborCounts() {
+	std::vector<std::vector<int>> neighborCounts(settings.gridSize, std::vector<int>(settings.gridSize, 0));
+
+	for (int row = 0; row < settings.gridSize; ++row) {
+		for (int col = 0; col < settings.gridSize; ++col) {
+			neighborCounts[row][col] = CalculateNeighborCount(row, col);
+		}
+	}
+
+	return neighborCounts;
+}
+
 void MainWindow::AdvanceToNextGeneration() {
-	std::vector<std::vector<bool>> sandbox(settings.gridSize, std::vector<bool>(settings.gridSize, false));
+	std::vector<std::vector<bool>> sandbox(settings.gridSize, std::vector<bool>(settings.gridSize, false));	
 	int newLivingCells = 0;
 
 	// Iterate through the entire board
 	for (int row = 0; row < settings.gridSize; ++row) {
 		for (int column = 0; column < settings.gridSize; ++column) {
-			int liveNeighbors = CalculateNeighborCount(row, column);
+			int liveNeighbors = CalculateNeighborCount(row, column);			
 			bool cellCurrentlyAlive = gameBoard[row][column];
 
 			// Apply the Game of Life rules
@@ -203,13 +221,15 @@ void MainWindow::AdvanceToNextGeneration() {
 
 	// Update the game board with the new generation
 	gameBoard.swap(sandbox);
-
+	auto neighborCounts = CalculateAllNeighborCounts();
 	// Update the living cells count and generation
 	livingCells = newLivingCells;
 	++generation;
 
 	// Update the status bar and refresh the drawing panel
-	
+	if (_drawingPanel) {
+		_drawingPanel->UpdateNeighborCounts(neighborCounts);
+	}
 	_drawingPanel->Refresh();
 	UpdateStatusBar();
 }

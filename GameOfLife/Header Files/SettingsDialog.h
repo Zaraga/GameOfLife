@@ -4,13 +4,14 @@
 #include "wx/spinctrl.h"
 #include "wx/clrpicker.h"
 #include "GameSettings.h"
+#include "wx/checkbox.h"
 
 class MainWindow;
-class DrawingPanel;
+//class DrawingPanel;
 
 class SettingsDialog : public wxDialog {
     MainWindow* mainWin;
-    DrawingPanel* drawPan;
+    //DrawingPanel* drawPan;
 public:
     SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxString& title, GameSettings* settings);
     ~SettingsDialog();
@@ -24,6 +25,7 @@ private:
     wxSpinCtrl* timerIntervalCtrl;
     wxColourPickerCtrl* livingCellColorPicker;
     wxColourPickerCtrl* deadCellColorPicker;
+    wxCheckBox* showNeighborCountCheckBox;
 
     // Pointer to the settings object
     GameSettings* settings;

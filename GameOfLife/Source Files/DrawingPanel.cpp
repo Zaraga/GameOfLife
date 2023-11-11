@@ -8,7 +8,7 @@ EVT_PAINT(DrawingPanel::OnPaint)
 EVT_LEFT_UP(DrawingPanel::OnMouseUp)
 wxEND_EVENT_TABLE()
 
-DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size, int gridSize, std::vector<std::vector<bool>>&gameBoard) 
+DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size, int gridSize, std::vector<std::vector<bool>>&gameBoard)
 	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), size), gridSize(gridSize), gameBoard(gameBoard), settings(nullptr) {
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	SetDoubleBuffered(true);
@@ -25,9 +25,15 @@ void DrawingPanel::SetSettings(GameSettings* settings) {
 		this->gridSize = settings->gridSize;
 		this->currentLivingColor = settings->GetLivingCellColor();
 		this->currentDeadColor = settings->GetDeadCellColor();
-
+		this->isNeighborCount = settings->showNeighborCount;
 		this->Refresh();
 	}
+}
+
+
+void DrawingPanel::UpdateNeighborCounts(std::vector<std::vector<int>>& counts) {
+	this->neighborCounts = counts;
+	this->Refresh();
 }
 
 void DrawingPanel::OnPaint(wxPaintEvent& event) {
@@ -41,7 +47,7 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	context->SetBrush(*wxWHITE);
 
 	//context->ClearRectangle(0, 0, GetSize().x, GetSize().y);
-		
+
 	float cellWidth = GetSize().x / (float)gridSize;
 	float cellHeight = GetSize().y / (float)gridSize;
 	for (int i = 0; i < gridSize; i++) {
@@ -51,7 +57,29 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 			context->DrawRectangle(cellWidth * i, cellHeight * j, cellWidth, cellHeight);
 		}
 	}
-	delete context;  // Clean up the context to prevent memory leaks
+
+	if (isNeighborCount) {
+		context->SetFont(wxFontInfo(16), *wxRED);
+		for (int i = 0; i < gridSize; ++i) {
+			for (int j = 0; j < gridSize; ++j) {
+				if (i < neighborCounts.size() && j < neighborCounts[i].size()) {
+					if (neighborCounts[i][j] > 0) {
+						if (neighborCounts[i][j] > 0) {
+							wxString text = wxString::Format("%d", neighborCounts[i][j]);
+							double textWidth, textHeight;
+							context->GetTextExtent(text, &textWidth, &textHeight);
+
+							double x = cellWidth * i + (cellWidth - textWidth) / 2;
+							double y = cellHeight * j + (cellHeight - textHeight) / 2;
+							context->DrawText(text, x, y);
+						}
+					}
+				}
+			}
+		}
+
+		delete context;  // Clean up the context to prevent memory leaks
+	}
 }
 
 void DrawingPanel::OnSizeChanged(wxSizeEvent& event) {

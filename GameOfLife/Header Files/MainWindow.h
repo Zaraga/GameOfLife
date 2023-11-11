@@ -12,7 +12,7 @@ private:
 	wxToolBar* toolBar = nullptr;
 	wxBoxSizer* _sizer = nullptr;
 	std::vector<std::vector<bool>> gameBoard;
-	
+	std::vector<std::vector<int>> neighborCounts;
 	int generation = 0; // Add this to track the generation count
 	int livingCells = 0; // Add this to track the living cells count
 	wxStatusBar* statusBar = nullptr; // Add this to reference the status bar
@@ -39,6 +39,7 @@ public:
 	void OnOpenSettings(wxCommandEvent& event);
 	void UpdateGameBoardSize(int gridSize);
 	void ReSetPanelSettings(GameSettings* settings);
+	std::vector<std::vector<int>> CalculateAllNeighborCounts();
 	wxDECLARE_EVENT_TABLE();
 };
 

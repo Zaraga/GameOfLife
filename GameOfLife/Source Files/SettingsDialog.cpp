@@ -40,12 +40,17 @@ SettingsDialog::SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxStrin
     deadCellColourSizer->Add(deadCellColorPicker);
     mainSizer->Add(deadCellColourSizer);
 
+    // Show Neighbor Count CheckBox
+    showNeighborCountCheckBox = new wxCheckBox(this, wxID_ANY, "Show Neighbor Count");
+    mainSizer->Add(showNeighborCountCheckBox);
+
     // Set control values from settings
     if (settings) {
         gridSizeCtrl->SetValue(settings->gridSize);
         timerIntervalCtrl->SetValue(settings->timerInterval);
         livingCellColorPicker->SetColour(settings->GetLivingCellColor());
         deadCellColorPicker->SetColour(settings->GetDeadCellColor());
+        showNeighborCountCheckBox->SetValue(settings->showNeighborCount);
     }
 
     // OK and Cancel buttons
@@ -76,12 +81,16 @@ void SettingsDialog::OnOk(wxCommandEvent& event) {
         wxColor deadColor = deadCellColorPicker->GetColour();
         settings->SetDeadCellColor(deadColor); 
 
+        settings->showNeighborCount = showNeighborCountCheckBox->IsChecked();
+
         mainWin->ReSetPanelSettings(settings);
         mainWin->UpdateGameBoardSize(newGridSize);
     }
+    settings->Save();
     EndModal(wxID_OK); // Ends the dialog and returns wxID_OK
 }
 
 void SettingsDialog::OnCancel(wxCommandEvent& event) {
+    settings->Load();
     EndModal(wxID_CANCEL); // Ends the dialog and returns wxID_CANCEL
 }
