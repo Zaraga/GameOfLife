@@ -10,7 +10,9 @@ enum {
 	playToolId = 10001, //  unique ID for play tool
 	clearToolId = 10002, // unique ID for clear tool
 	pauseToolId = 10003, // unique ID for pause tool
-	ID_OpenSettings = 10004 // unique ID for Settings Menu
+	ID_OpenSettings = 10004, // unique ID for Settings Menu
+	ID_Randomize = 10005,
+	ID_RandomizeWithSeed = 10006,
 };
 
 wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
@@ -20,7 +22,8 @@ EVT_TOOL(playToolId, MainWindow::OnPlay)
 EVT_TOOL(pauseToolId, MainWindow::OnPause)
 EVT_TIMER(wxID_ANY, MainWindow::OnTimer)
 EVT_MENU(ID_OpenSettings, MainWindow::OnOpenSettings)
-
+EVT_MENU(ID_Randomize, MainWindow::OnRandomize)
+EVT_MENU(ID_RandomizeWithSeed, MainWindow::OnRandomizeWithSeed)
 wxEND_EVENT_TABLE()
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(750, 300), wxSize(500, 500)) {
@@ -31,8 +34,11 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(75
 	// Create the Options menu
 	wxMenu* optionsMenu = new wxMenu();
 	optionsMenu->Append(ID_OpenSettings, "&Settings");
+	optionsMenu->Append(ID_Randomize, "&Randomize");
+	optionsMenu->Append(ID_RandomizeWithSeed, "Randomize with &Seed");
 	// Add the Options menu to the menu bar
-	menuBar->Append(optionsMenu, "&Options");	
+	menuBar->Append(optionsMenu, "&Options");
+	
 	// Set the menu bar for the frame
 	SetMenuBar(menuBar);
 
@@ -96,7 +102,16 @@ void MainWindow::UpdateGameBoardSize(int gridSize) {
 	_drawingPanel->Refresh();
 }
 
+void MainWindow::OnRandomize(wxCommandEvent& event) {
+	RandomizeGrid(time(NULL));
+}
 
+void MainWindow::OnRandomizeWithSeed(wxCommandEvent& event) {
+	long seed = wxGetNumberFromUser("Enter seed:", "Seed:", "Randomize with Seed", 0, 0, LONG_MAX, this);
+	if (seed != -1) { // -1 is returned if the user cancels the dialog
+		RandomizeGrid(seed);
+	}
+}
 
 void MainWindow::OnOpenSettings(wxCommandEvent& event) {
 	// Assume settingsDialog is a class that inherits from wxDialog and has a constructor that accepts a GameSettings pointer
@@ -148,6 +163,18 @@ void MainWindow::OnPause(wxCommandEvent& event) {
 	toolBar->InsertTool(pos, playToolId, "Play", playBitmap);
 	toolBar->Realize();
 	this->Layout(); // very important for post pause status bar to stick around
+}
+
+void MainWindow::RandomizeGrid(int seed) {
+	srand(seed);
+	for (auto& row : gameBoard) {
+		for (auto cell : row) {
+			cell = rand() % 2; // 50% chance of being alive
+			// For different probabilities, adjust the condition
+			// e.g., for about 45% alive: cell = (rand() % 100) < 45;
+		}
+	}
+	_drawingPanel->Refresh();
 }
 
 int MainWindow::CalculateNeighborCount(int row, int column) {

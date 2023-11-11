@@ -4,6 +4,9 @@
 #include <vector>
 #include "GameSettings.h"
 #include "SettingsDialog.h"
+#include <cstdlib>
+#include <ctime>
+#include <wx/numdlg.h>
 
 class MainWindow : public wxFrame
 {
@@ -40,6 +43,9 @@ public:
 	void UpdateGameBoardSize(int gridSize);
 	void ReSetPanelSettings(GameSettings* settings);
 	std::vector<std::vector<int>> CalculateAllNeighborCounts();
+	void OnRandomize(wxCommandEvent& event);
+	void OnRandomizeWithSeed(wxCommandEvent& event);
+	void RandomizeGrid(int seed);
 	wxDECLARE_EVENT_TABLE();
 };
 
