@@ -1,10 +1,11 @@
 #pragma once
 #include <wx/colour.h>
+#include <iostream>
 //#include "MainWindow.h"
 //#include "DrawingPanel.h"
 
 struct GameSettings {
-    unsigned int livingCellRed = 195;
+    unsigned int livingCellRed = 158;
     unsigned int livingCellGreen = 128;
     unsigned int livingCellBlue = 128;
     unsigned int livingCellAlpha = 255;
@@ -31,6 +32,10 @@ struct GameSettings {
         livingCellGreen = color.Green();
         livingCellBlue = color.Blue();
         livingCellAlpha = color.Alpha();
+       /* std::cout << "Living Cell Red: " << livingCellRed << std::endl;
+        std::cout << "Living Cell Green: " << livingCellGreen << std::endl;
+        std::cout << "Living Cell Blue: " << livingCellBlue << std::endl;
+        std::cout << "Living Cell Alpha: " << livingCellAlpha << std::endl;*/
     }
 
     void SetDeadCellColor(const wxColor& color) {

@@ -25,6 +25,8 @@ void DrawingPanel::SetSettings(GameSettings* settings) {
 		this->gridSize = settings->gridSize;
 		this->currentLivingColor = settings->GetLivingCellColor();
 		this->currentDeadColor = settings->GetDeadCellColor();
+
+		this->Refresh();
 	}
 }
 

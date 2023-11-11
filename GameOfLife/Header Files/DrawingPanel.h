@@ -13,7 +13,7 @@ private:
     void OnPaint(wxPaintEvent& event);
     void OnSizeChanged(wxSizeEvent& event);
     void OnMouseUp(wxMouseEvent& event); // Mouse event handler method
-    GameSettings* settings;
+    
     int gridSize;
     
     
@@ -21,6 +21,7 @@ private:
 public:
     DrawingPanel(wxFrame* MainWindow, wxSize size, int gridSize, std::vector<std::vector<bool>>& gameBoard);
     ~DrawingPanel();
+    GameSettings* settings;
     void SetGridSize(int size);
     void SetSettings(GameSettings* settings);
     //int gridSize = settings.gridSize;

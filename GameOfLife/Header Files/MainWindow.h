@@ -8,7 +8,7 @@
 class MainWindow : public wxFrame
 {
 private:
-	DrawingPanel* _drawingPanel = nullptr;
+	
 	wxToolBar* toolBar = nullptr;
 	wxBoxSizer* _sizer = nullptr;
 	std::vector<std::vector<bool>> gameBoard;
@@ -26,6 +26,7 @@ public:
 	MainWindow();
 	~MainWindow();	
 	GameSettings settings;
+	DrawingPanel* _drawingPanel = nullptr;
 	void OnSizeChanged(wxSizeEvent& event);
 	void InitializeGameBoard();
 	void OnPlay(wxCommandEvent& event);
@@ -37,6 +38,7 @@ public:
 	void SetTimerInterval(GameSettings* timerInterval);//GameSettings timerInterval;  // Interval for the timer in milliseconds	
 	void OnOpenSettings(wxCommandEvent& event);
 	void UpdateGameBoardSize(int gridSize);
+	void ReSetPanelSettings(GameSettings* settings);
 	wxDECLARE_EVENT_TABLE();
 };
 

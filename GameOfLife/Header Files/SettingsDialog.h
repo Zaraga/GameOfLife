@@ -6,9 +6,11 @@
 #include "GameSettings.h"
 
 class MainWindow;
+class DrawingPanel;
 
 class SettingsDialog : public wxDialog {
     MainWindow* mainWin;
+    DrawingPanel* drawPan;
 public:
     SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxString& title, GameSettings* settings);
     ~SettingsDialog();
@@ -20,8 +22,8 @@ private:
     // Pointers to controls for settings
     wxSpinCtrl* gridSizeCtrl;
     wxSpinCtrl* timerIntervalCtrl;
-    wxColourPickerCtrl* livingCellColourPicker;
-    wxColourPickerCtrl* deadCellColourPicker;
+    wxColourPickerCtrl* livingCellColorPicker;
+    wxColourPickerCtrl* deadCellColorPicker;
 
     // Pointer to the settings object
     GameSettings* settings;
@@ -33,7 +35,7 @@ private:
 // IDs for the controls
 enum {
     ID_GridSize = 11000,
-    ID_TimerInterval,
-    ID_LivingCellColour,
-    ID_DeadCellColour
+    ID_TimerInterval = 11100,
+    ID_LivingCellColor = 12000,
+    ID_DeadCellColor = 12001
 };

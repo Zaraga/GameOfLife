@@ -72,6 +72,13 @@ MainWindow::~MainWindow() {
 	delete gameTimer; // Clean up the timer
 }
 
+
+void MainWindow::ReSetPanelSettings(GameSettings* settings) {
+	if (_drawingPanel) {
+		_drawingPanel->SetSettings(settings);
+	}
+}
+
 void MainWindow::UpdateGameBoardSize(int gridSize) {
 	if (isGameRunning) {
 		wxCommandEvent event(wxEVT_TOOL, pauseToolId);
