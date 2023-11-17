@@ -7,11 +7,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <wx/numdlg.h>
+#include <wx/textfile.h>
 
 class MainWindow : public wxFrame
 {
 private:
-	
+	wxString currentFilePath;
 	wxToolBar* toolBar = nullptr;
 	wxBoxSizer* _sizer = nullptr;
 	std::vector<std::vector<bool>> gameBoard;
@@ -24,6 +25,8 @@ private:
 	wxBitmap playBitmap;
 	wxBitmap pauseBitmap;
 	bool isGameRunning = false;
+	void ReadCellsFile(const wxString& filePath);
+	void SaveToFile(const wxString& filePath);
 
 public:
 	MainWindow();
@@ -45,6 +48,11 @@ public:
 	std::vector<std::vector<int>> CalculateAllNeighborCounts();
 	void OnRandomize(wxCommandEvent& event);
 	void OnRandomizeWithSeed(wxCommandEvent& event);
+	void OnNew(wxCommandEvent& event);
+	void OnOpen(wxCommandEvent& event);
+	void OnSave(wxCommandEvent& event);
+	void OnSaveAs(wxCommandEvent& event);
+	void OnExit(wxCommandEvent& event);
 	void RandomizeGrid(int seed);
 	wxDECLARE_EVENT_TABLE();
 };

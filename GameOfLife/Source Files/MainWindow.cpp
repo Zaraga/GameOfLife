@@ -13,6 +13,11 @@ enum {
 	ID_OpenSettings = 10004, // unique ID for Settings Menu
 	ID_Randomize = 10005,
 	ID_RandomizeWithSeed = 10006,
+	ID_New = 10007,
+	ID_Open = 10008,
+	ID_Save = 10009,
+	ID_SaveAs = 10010,
+	ID_Exit = 10011,
 };
 
 wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
@@ -24,6 +29,11 @@ EVT_TIMER(wxID_ANY, MainWindow::OnTimer)
 EVT_MENU(ID_OpenSettings, MainWindow::OnOpenSettings)
 EVT_MENU(ID_Randomize, MainWindow::OnRandomize)
 EVT_MENU(ID_RandomizeWithSeed, MainWindow::OnRandomizeWithSeed)
+EVT_MENU(ID_New, MainWindow::OnNew)
+EVT_MENU(ID_Open, MainWindow::OnOpen)
+EVT_MENU(ID_Save, MainWindow::OnSave)
+EVT_MENU(ID_SaveAs, MainWindow::OnSaveAs)
+EVT_MENU(ID_Exit, MainWindow::OnExit)
 wxEND_EVENT_TABLE()
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(750, 300), wxSize(500, 500)) {
@@ -31,6 +41,14 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(75
 	
 	// Create Menu Bar
 	wxMenuBar* menuBar = new wxMenuBar();
+	wxMenu* fileMenu = new wxMenu();
+	fileMenu->Append(ID_New, "&New");
+	fileMenu->Append(ID_Open, "&Open");
+	fileMenu->Append(ID_Save, "&Save");
+	fileMenu->Append(ID_SaveAs, "Save &As");
+	fileMenu->Append(ID_Exit, "E&xit");
+
+	menuBar->Append(fileMenu, "&File");
 	// Create the Options menu
 	wxMenu* optionsMenu = new wxMenu();
 	optionsMenu->Append(ID_OpenSettings, "&Settings");
@@ -80,6 +98,88 @@ MainWindow::~MainWindow() {
 	delete gameTimer; // Clean up the timer
 }
 
+void MainWindow::OnNew(wxCommandEvent& event) {
+	// Clear game state and file name
+
+	currentFilePath.Clear();
+}
+
+void MainWindow::OnOpen(wxCommandEvent& event) {
+	wxFileDialog openFileDialog(this, _("Open .cells file"), "", "",
+		".cells files (*.cells)|*.cells", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	if (openFileDialog.ShowModal() == wxID_CANCEL) return; // User cancelled
+
+	ReadCellsFile(openFileDialog.GetPath());
+}
+
+void MainWindow::OnSave(wxCommandEvent& event) {
+	if (currentFilePath.IsEmpty()) {
+		OnSaveAs(event);
+	}
+	else {
+		SaveToFile(currentFilePath);
+	}
+}
+
+void MainWindow::OnSaveAs(wxCommandEvent& event) {
+	wxFileDialog saveFileDialog(this, _("Save .cells file"), "", "", ".cells files (*.cells)|*.cells", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+		return;
+	}
+
+	currentFilePath = saveFileDialog.GetPath();
+
+	SaveToFile(currentFilePath);
+}
+
+void MainWindow::OnExit(wxCommandEvent& event) {
+	Close(true); // Close the application
+}
+
+void MainWindow::ReadCellsFile(const wxString& filePath) {
+	wxTextFile file(filePath);
+	if (!file.Open()) return; // Handle file open error
+
+	gameBoard.clear();
+	wxString line;
+	for (line = file.GetFirstLine(); !file.Eof(); line = file.GetNextLine()) {
+		if (line.StartsWith("!")) continue; // Ignore comment lines
+
+		std::vector<bool> row;
+		for (auto ch : line) {
+			row.push_back(ch == '*'); // '*' for alive, '.' for dead
+		}
+		gameBoard.push_back(row);
+	}
+
+	UpdateGameBoardSize(gameBoard[0].size()); // Adjust grid size
+	// Update the UI or game state as needed
+}
+
+void MainWindow::SaveToFile(const wxString& filePath) {
+	// Implement the logic to save your game state to the file
+   // This will depend on how your game state is stored and structured
+	wxTextFile file(filePath);
+	if (!file.Exists()) {
+		file.Create();
+	}
+	else {
+		file.Open();
+		file.Clear();
+	}
+
+	// Example: Write each row of the game board to the file
+	for (const auto& row : gameBoard) {
+		wxString line;
+		for (bool cell : row) {
+			line += cell ? '*' : '.';
+		}
+		file.AddLine(line);
+	}
+
+	file.Write();
+	file.Close();
+}
 
 void MainWindow::ReSetPanelSettings(GameSettings* settings) {
 	if (_drawingPanel) {
