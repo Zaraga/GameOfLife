@@ -99,9 +99,10 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::OnNew(wxCommandEvent& event) {
-	// Clear game state and file name
-
+	
+	ReadCellsFile("Default.cells");
 	currentFilePath.Clear();
+	gameBoard.clear();
 }
 
 void MainWindow::OnOpen(wxCommandEvent& event) {
@@ -110,6 +111,8 @@ void MainWindow::OnOpen(wxCommandEvent& event) {
 	if (openFileDialog.ShowModal() == wxID_CANCEL) return; // User cancelled
 
 	ReadCellsFile(openFileDialog.GetPath());
+	wxString FilePath(openFileDialog.GetPath());
+	currentFilePath = FilePath;
 }
 
 void MainWindow::OnSave(wxCommandEvent& event) {
@@ -140,9 +143,26 @@ void MainWindow::ReadCellsFile(const wxString& filePath) {
 	wxTextFile file(filePath);
 	if (!file.Open()) return; // Handle file open error
 
-	gameBoard.clear();
+	wxString fileContent;
 	wxString line;
 	for (line = file.GetFirstLine(); !file.Eof(); line = file.GetNextLine()) {
+		fileContent += line + "\n";
+	}
+
+	wxString delimiter = "##Settings##";
+	int delimiterPos = fileContent.find(delimiter);
+	if (delimiterPos != wxNOT_FOUND) {
+		wxString settingsData = fileContent.Mid(delimiterPos + delimiter.length());
+		settings.Deserialize(settingsData);
+
+		fileContent = fileContent.Left(delimiterPos);
+	}
+
+
+	gameBoard.clear();
+	wxStringTokenizer tokenizer(fileContent, "\n");
+	while (tokenizer.HasMoreTokens()) {
+		line = tokenizer.GetNextToken();
 		if (line.StartsWith("!")) continue; // Ignore comment lines
 
 		std::vector<bool> row;
@@ -153,7 +173,7 @@ void MainWindow::ReadCellsFile(const wxString& filePath) {
 	}
 
 	UpdateGameBoardSize(gameBoard[0].size()); // Adjust grid size
-	// Update the UI or game state as needed
+	_drawingPanel->Refresh();// Update the UI or game state as needed
 }
 
 void MainWindow::SaveToFile(const wxString& filePath) {
@@ -177,6 +197,8 @@ void MainWindow::SaveToFile(const wxString& filePath) {
 		file.AddLine(line);
 	}
 
+	file.AddLine("##Settings##");
+	file.AddLine(settings.Serialize());
 	file.Write();
 	file.Close();
 }

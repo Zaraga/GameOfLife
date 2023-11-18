@@ -1,5 +1,6 @@
 #include "SettingsDialog.h"
 #include "MainWindow.h"
+#include <wx/textfile.h>
 
 wxBEGIN_EVENT_TABLE(SettingsDialog, wxDialog)
 EVT_BUTTON(wxID_OK, SettingsDialog::OnOk)
@@ -59,7 +60,7 @@ SettingsDialog::SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxStrin
 
     SetSizer(mainSizer);
     mainSizer->Fit(this);
-    mainSizer->SetSizeHints(this);
+    mainSizer->SetSizeHints(this);    
 }
 
 SettingsDialog::~SettingsDialog() {
@@ -86,11 +87,12 @@ void SettingsDialog::OnOk(wxCommandEvent& event) {
         mainWin->ReSetPanelSettings(settings);
         mainWin->UpdateGameBoardSize(newGridSize);
     }
-    settings->Save();
+    mainWin->OnSave(event);
+    //settings->Save();
     EndModal(wxID_OK); // Ends the dialog and returns wxID_OK
 }
 
 void SettingsDialog::OnCancel(wxCommandEvent& event) {
-    settings->Load();
+    //settings->Load();
     EndModal(wxID_CANCEL); // Ends the dialog and returns wxID_CANCEL
 }

@@ -9,6 +9,7 @@
 #include <wx/numdlg.h>
 #include <wx/textfile.h>
 
+
 class MainWindow : public wxFrame
 {
 private:
@@ -25,8 +26,7 @@ private:
 	wxBitmap playBitmap;
 	wxBitmap pauseBitmap;
 	bool isGameRunning = false;
-	void ReadCellsFile(const wxString& filePath);
-	void SaveToFile(const wxString& filePath);
+	
 
 public:
 	MainWindow();
@@ -54,6 +54,8 @@ public:
 	void OnSaveAs(wxCommandEvent& event);
 	void OnExit(wxCommandEvent& event);
 	void RandomizeGrid(int seed);
+	void ReadCellsFile(const wxString& filePath);
+	void SaveToFile(const wxString& filePath);
 	wxDECLARE_EVENT_TABLE();
 };
 
