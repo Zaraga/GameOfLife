@@ -66,6 +66,8 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(75
 	int gridSize = settings.gridSize;
 	
 
+
+
 	_drawingPanel = new DrawingPanel(this, wxDefaultSize, gridSize, gameBoard);
 	_drawingPanel->SetSettings(&settings);
 	_drawingPanel->SetGridSize(settings.gridSize);
@@ -87,7 +89,7 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(75
 
 	statusBar = CreateStatusBar(); // Create the status bar
 	UpdateStatusBar();			   // Initialize the status bar text
-
+	
 	this->Layout(); // Ensure the layout is refreshed
 }
 
@@ -100,9 +102,9 @@ MainWindow::~MainWindow() {
 
 void MainWindow::OnNew(wxCommandEvent& event) {
 	
-	ReadCellsFile("Default.cells");
+	//ReadCellsFile("Default.cells");
 	currentFilePath.Clear();
-	gameBoard.clear();
+	OnClear(event);
 }
 
 void MainWindow::OnOpen(wxCommandEvent& event) {
@@ -148,16 +150,17 @@ void MainWindow::ReadCellsFile(const wxString& filePath) {
 	for (line = file.GetFirstLine(); !file.Eof(); line = file.GetNextLine()) {
 		fileContent += line + "\n";
 	}
-
+	
 	wxString delimiter = "##Settings##";
 	int delimiterPos = fileContent.find(delimiter);
 	if (delimiterPos != wxNOT_FOUND) {
 		wxString settingsData = fileContent.Mid(delimiterPos + delimiter.length());
-		settings.Deserialize(settingsData);
-
+		settings.Deserialize(settingsData);		
 		fileContent = fileContent.Left(delimiterPos);
+		//ReSetPanelSettings(&settings);
+		
 	}
-
+	
 
 	gameBoard.clear();
 	wxStringTokenizer tokenizer(fileContent, "\n");
@@ -173,7 +176,8 @@ void MainWindow::ReadCellsFile(const wxString& filePath) {
 	}
 
 	UpdateGameBoardSize(gameBoard[0].size()); // Adjust grid size
-	_drawingPanel->Refresh();// Update the UI or game state as needed
+	
+	 //Update the UI or game state as needed
 }
 
 void MainWindow::SaveToFile(const wxString& filePath) {
@@ -237,7 +241,7 @@ void MainWindow::OnRandomizeWithSeed(wxCommandEvent& event) {
 
 void MainWindow::OnOpenSettings(wxCommandEvent& event) {
 	// Assume settingsDialog is a class that inherits from wxDialog and has a constructor that accepts a GameSettings pointer
-	SettingsDialog settingsDialog(this, wxID_ANY, "Settings", &settings);
+	SettingsDialog settingsDialog(this, wxID_ANY, "Settings", settings);	
 	if (settingsDialog.ShowModal() == wxID_OK) {
 		// The user clicked OK, update your main window as needed
 		InitializeGameBoard(); // Re-initialize the game board if needed

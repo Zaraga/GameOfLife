@@ -54,17 +54,17 @@ struct GameSettings {
     }
 
    enum : unsigned int {
-       GridSizeKey = 1,
-       TimerIntervalKey = 2,
-       LivingCellRedKey = 3,
-       LivingCellGreenKey = 4,
-       LivingCellBlueKey = 5,
-       LivingCellAlphaKey = 6,
-       DeadCellRedKey = 7,
-       DeadCellGreenKey = 8,
-       DeadCellBlueKey = 9,
-       DeadCellAlphaKey = 10,
-       ShowNeighborCountKey = 11,
+       GridSizeKey,
+       TimerIntervalKey,
+       LivingCellRedKey,
+       LivingCellGreenKey,
+       LivingCellBlueKey,
+       LivingCellAlphaKey,
+       DeadCellRedKey,
+       DeadCellGreenKey,
+       DeadCellBlueKey,
+       DeadCellAlphaKey,
+       ShowNeighborCountKey,
    };
    
    
@@ -77,42 +77,40 @@ struct GameSettings {
             wxString key = token.BeforeFirst('=');
             wxString value = token.AfterFirst('=');
 
-            switch (hashStringToInt(key.c_str())) {
-                case GridSizeKey:                    
-                    if (value.ToLong(&val)) gridSize = static_cast<int>(val);
-                    break;
-                case TimerIntervalKey:                    
-                    if (value.ToLong(&val)) timerInterval = static_cast<int>(val);
-                    break;
-                case LivingCellRedKey:                    
-                    if (value.ToLong(&val)) livingCellRed = static_cast<int>(val);
-                    break;
-                case LivingCellGreenKey:                    
-                    if (value.ToLong(&val)) livingCellGreen = static_cast<int>(val);
-                    break;
-                case LivingCellBlueKey:
-                    if (value.ToLong(&val)) livingCellBlue = static_cast<int>(val);
-                    break;
-                case LivingCellAlphaKey:                    
-                    if (value.ToLong(&val)) livingCellAlpha = static_cast<int>(val);
-                    break;
-                case DeadCellRedKey:                    
-                    if (value.ToLong(&val)) deadCellRed = static_cast<int>(val);
-                    break;
-                case DeadCellGreenKey:                    
-                    if (value.ToLong(&val)) deadCellGreen = static_cast<int>(val);
-                    break;
-                case DeadCellBlueKey:                    
-                    if (value.ToLong(&val)) deadCellBlue = static_cast<int>(val);
-                    break;
-                case DeadCellAlphaKey:                    
-                    if (value.ToLong(&val)) deadCellAlpha = static_cast<int>(val);
-                    break;
-                case ShowNeighborCountKey:                    
-                    if (value.ToLong(&val)) showNeighborCount = static_cast<int>(val);
-                    break;
-                default:
-                    break;
+            int hashedKey = hashStringToInt(key.c_str());
+
+            if (hashedKey == GridSizeKey) {
+                if (value.ToLong(&val)) gridSize = static_cast<int>(val);
+            }
+            else if (hashedKey == TimerIntervalKey) {
+                if (value.ToLong(&val)) timerInterval = static_cast<int>(val);
+            }
+            else if (hashedKey == LivingCellRedKey) {
+                if (value.ToLong(&val)) livingCellRed = static_cast<int>(val);
+            }
+            else if (hashedKey == LivingCellGreenKey) {
+                if (value.ToLong(&val)) livingCellGreen = static_cast<int>(val);
+            }
+            else if (hashedKey == LivingCellBlueKey) {
+                if (value.ToLong(&val)) livingCellBlue = static_cast<int>(val);
+            }
+            else if (hashedKey == LivingCellAlphaKey) {
+                if (value.ToLong(&val)) livingCellAlpha = static_cast<int>(val);
+            }
+            else if (hashedKey == DeadCellRedKey) {
+                if (value.ToLong(&val)) deadCellRed = static_cast<int>(val);
+            }
+            else if (hashedKey == DeadCellGreenKey) {
+                if (value.ToLong(&val)) deadCellGreen = static_cast<int>(val);
+            }
+            else if (hashedKey == DeadCellBlueKey) {
+                if (value.ToLong(&val)) deadCellBlue = static_cast<int>(val);
+            }
+            else if (hashedKey == DeadCellAlphaKey) {
+                if (value.ToLong(&val)) deadCellAlpha = static_cast<int>(val);
+            }
+            else if (hashedKey == ShowNeighborCountKey) {
+                if (value.ToLong(&val)) showNeighborCount = static_cast<int>(val);
             }
         }
     }
@@ -146,11 +144,7 @@ struct GameSettings {
         livingCellRed = color.Red();
         livingCellGreen = color.Green();
         livingCellBlue = color.Blue();
-        livingCellAlpha = color.Alpha();
-       /* std::cout << "Living Cell Red: " << livingCellRed << std::endl;
-        std::cout << "Living Cell Green: " << livingCellGreen << std::endl;
-        std::cout << "Living Cell Blue: " << livingCellBlue << std::endl;
-        std::cout << "Living Cell Alpha: " << livingCellAlpha << std::endl;*/
+        livingCellAlpha = color.Alpha();       
     }
 
     void SetDeadCellColor(const wxColor& color) {

@@ -7,7 +7,7 @@ EVT_BUTTON(wxID_OK, SettingsDialog::OnOk)
 EVT_BUTTON(wxID_CANCEL, SettingsDialog::OnCancel)
 wxEND_EVENT_TABLE()
 
-SettingsDialog::SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxString& title, GameSettings* settings)
+SettingsDialog::SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxString& title, GameSettings settings)
     : wxDialog(mainWin, id, title), mainWin(mainWin), settings(settings) {
 
     wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -46,12 +46,12 @@ SettingsDialog::SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxStrin
     mainSizer->Add(showNeighborCountCheckBox);
 
     // Set control values from settings
-    if (settings) {
-        gridSizeCtrl->SetValue(settings->gridSize);
-        timerIntervalCtrl->SetValue(settings->timerInterval);
-        livingCellColorPicker->SetColour(settings->GetLivingCellColor());
-        deadCellColorPicker->SetColour(settings->GetDeadCellColor());
-        showNeighborCountCheckBox->SetValue(settings->showNeighborCount);
+    if (&settings) {
+        gridSizeCtrl->SetValue(settings.gridSize);
+        timerIntervalCtrl->SetValue(settings.timerInterval);
+        livingCellColorPicker->SetColour(settings.GetLivingCellColor());
+        deadCellColorPicker->SetColour(settings.GetDeadCellColor());
+        showNeighborCountCheckBox->SetValue(settings.showNeighborCount);
     }
 
     // OK and Cancel buttons
@@ -67,24 +67,26 @@ SettingsDialog::~SettingsDialog() {
 
 }
 
+
+
 void SettingsDialog::OnOk(wxCommandEvent& event) {
     // Validate and save settings
-    if (settings) {
-        settings->gridSize = gridSizeCtrl->GetValue();
+    if (&settings) {
+        settings.gridSize = gridSizeCtrl->GetValue();
         int newGridSize = gridSizeCtrl->GetValue();
         
         
-        settings->timerInterval = timerIntervalCtrl->GetValue();
+        settings.timerInterval = timerIntervalCtrl->GetValue();
         
         wxColor livingColor = livingCellColorPicker->GetColour();
-        settings->SetLivingCellColor(livingColor);
+        settings.SetLivingCellColor(livingColor);
 
         wxColor deadColor = deadCellColorPicker->GetColour();
-        settings->SetDeadCellColor(deadColor); 
+        settings.SetDeadCellColor(deadColor); 
 
-        settings->showNeighborCount = showNeighborCountCheckBox->IsChecked();
+        settings.showNeighborCount = showNeighborCountCheckBox->IsChecked();
 
-        mainWin->ReSetPanelSettings(settings);
+        mainWin->ReSetPanelSettings(&settings);
         mainWin->UpdateGameBoardSize(newGridSize);
     }
     mainWin->OnSave(event);

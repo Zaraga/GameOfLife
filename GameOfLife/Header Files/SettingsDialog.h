@@ -13,11 +13,12 @@ class SettingsDialog : public wxDialog {
     MainWindow* mainWin;
     //DrawingPanel* drawPan;
 public:
-    SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxString& title, GameSettings* settings);
+    SettingsDialog(MainWindow* mainWin, wxWindowID id, const wxString& title, GameSettings settings);
     ~SettingsDialog();
     // Event handlers for OK and Cancel buttons
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
+   // void SetSettingsD(GameSettings* settings);
 
 private:
     // Pointers to controls for settings
@@ -28,7 +29,7 @@ private:
     wxCheckBox* showNeighborCountCheckBox;
 
     // Pointer to the settings object
-    GameSettings* settings;
+    GameSettings settings;
 
     // Declare the event table
     wxDECLARE_EVENT_TABLE();

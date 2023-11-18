@@ -33,6 +33,7 @@ public:
 	~MainWindow();	
 	GameSettings settings;
 	DrawingPanel* _drawingPanel = nullptr;
+	SettingsDialog* _settingsDialog = nullptr;
 	void OnSizeChanged(wxSizeEvent& event);
 	void InitializeGameBoard();
 	void OnPlay(wxCommandEvent& event);
@@ -55,7 +56,7 @@ public:
 	void OnExit(wxCommandEvent& event);
 	void RandomizeGrid(int seed);
 	void ReadCellsFile(const wxString& filePath);
-	void SaveToFile(const wxString& filePath);
+	void SaveToFile(const wxString& filePath);	
 	wxDECLARE_EVENT_TABLE();
 };
 

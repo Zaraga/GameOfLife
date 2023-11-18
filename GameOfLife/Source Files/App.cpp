@@ -13,7 +13,7 @@ App::~App() {
 }
 
 bool App::OnInit() {
-	GameSettings settings;
+	//GameSettings settings;
 	//settings.Load();
 	MainWindow* mainWindow = new MainWindow();	
 	mainWindow->Show();
