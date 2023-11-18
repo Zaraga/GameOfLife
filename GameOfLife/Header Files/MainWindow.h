@@ -45,7 +45,7 @@ public:
 	void SetTimerInterval(GameSettings* timerInterval);//GameSettings timerInterval;  // Interval for the timer in milliseconds	
 	void OnOpenSettings(wxCommandEvent& event);
 	void UpdateGameBoardSize(int gridSize);
-	void ReSetPanelSettings(GameSettings* settings);
+	void ReSetPanelSettings(GameSettings& settings);
 	std::vector<std::vector<int>> CalculateAllNeighborCounts();
 	void OnRandomize(wxCommandEvent& event);
 	void OnRandomizeWithSeed(wxCommandEvent& event);

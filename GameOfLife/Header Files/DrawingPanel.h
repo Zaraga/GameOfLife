@@ -23,7 +23,7 @@ public:
     ~DrawingPanel();
     GameSettings* settings;
     void SetGridSize(int size);
-    void SetSettings(GameSettings* settings);
+    void SetSettings(GameSettings& settings);
     //int gridSize = settings.gridSize;
     wxColor currentLivingColor;
     wxColor currentDeadColor;

@@ -69,7 +69,7 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Game of Life", wxPoint(75
 
 
 	_drawingPanel = new DrawingPanel(this, wxDefaultSize, gridSize, gameBoard);
-	_drawingPanel->SetSettings(&settings);
+	_drawingPanel->SetSettings(settings);
 	_drawingPanel->SetGridSize(settings.gridSize);
 	//Show(true);
 	
@@ -157,7 +157,7 @@ void MainWindow::ReadCellsFile(const wxString& filePath) {
 		wxString settingsData = fileContent.Mid(delimiterPos + delimiter.length());
 		settings.Deserialize(settingsData);		
 		fileContent = fileContent.Left(delimiterPos);
-		//ReSetPanelSettings(&settings);
+		ReSetPanelSettings(settings);
 		
 	}
 	
@@ -207,7 +207,7 @@ void MainWindow::SaveToFile(const wxString& filePath) {
 	file.Close();
 }
 
-void MainWindow::ReSetPanelSettings(GameSettings* settings) {
+void MainWindow::ReSetPanelSettings(GameSettings& settings) {
 	if (_drawingPanel) {
 		_drawingPanel->SetSettings(settings);
 	}
@@ -242,6 +242,7 @@ void MainWindow::OnRandomizeWithSeed(wxCommandEvent& event) {
 void MainWindow::OnOpenSettings(wxCommandEvent& event) {
 	// Assume settingsDialog is a class that inherits from wxDialog and has a constructor that accepts a GameSettings pointer
 	SettingsDialog settingsDialog(this, wxID_ANY, "Settings", settings);	
+	settingsDialog.UpdateFields();
 	if (settingsDialog.ShowModal() == wxID_OK) {
 		// The user clicked OK, update your main window as needed
 		InitializeGameBoard(); // Re-initialize the game board if needed

@@ -9,7 +9,7 @@ EVT_LEFT_UP(DrawingPanel::OnMouseUp)
 wxEND_EVENT_TABLE()
 
 DrawingPanel::DrawingPanel(wxFrame* parent, wxSize size, int gridSize, std::vector<std::vector<bool>>&gameBoard)
-	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), size), gridSize(gridSize), gameBoard(gameBoard), settings(nullptr) {
+	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), size), gridSize(gridSize), gameBoard(gameBoard), settings(settings) {
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	SetDoubleBuffered(true);
 	
@@ -19,13 +19,13 @@ DrawingPanel::~DrawingPanel() {
 
 }
 
-void DrawingPanel::SetSettings(GameSettings* settings) {
-	this->settings = settings;
-	if (settings != nullptr) {
-		this->gridSize = settings->gridSize;
-		this->currentLivingColor = settings->GetLivingCellColor();
-		this->currentDeadColor = settings->GetDeadCellColor();
-		this->isNeighborCount = settings->showNeighborCount;
+void DrawingPanel::SetSettings(GameSettings& settings) {
+	this->settings = &settings;
+	if (&settings) {
+		this->gridSize = settings.gridSize;
+		this->currentLivingColor = settings.GetLivingCellColor();
+		this->currentDeadColor = settings.GetDeadCellColor();
+		this->isNeighborCount = settings.showNeighborCount;
 		this->Refresh();
 	}
 }

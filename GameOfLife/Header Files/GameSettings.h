@@ -53,19 +53,19 @@ struct GameSettings {
         return hash;
     }
 
-   enum : unsigned int {
-       GridSizeKey,
-       TimerIntervalKey,
-       LivingCellRedKey,
-       LivingCellGreenKey,
-       LivingCellBlueKey,
-       LivingCellAlphaKey,
-       DeadCellRedKey,
-       DeadCellGreenKey,
-       DeadCellBlueKey,
-       DeadCellAlphaKey,
-       ShowNeighborCountKey,
+   enum {
+       GridSize,
+       TimerInterval,
+       LivingCellRed,
+       LivingCellGreen,
+       LivingCellBlue,
+       LivingCellAlpha,
+       DeadCellRed,
+       DeadCellGreen,
+       DeadCellBlue,
+       DeadCellAlpha,
    };
+   bool ShowNeighborCount;
    
    
 
@@ -79,44 +79,44 @@ struct GameSettings {
 
             int hashedKey = hashStringToInt(key.c_str());
 
-            if (hashedKey == GridSizeKey) {
-                if (value.ToLong(&val)) gridSize = static_cast<int>(val);
+            if (key == "GridSize") {
+                if (value.ToLong(&val)) gridSize = static_cast<int>(val);                
             }
-            else if (hashedKey == TimerIntervalKey) {
+            else if (key == "TimerInterval") {
                 if (value.ToLong(&val)) timerInterval = static_cast<int>(val);
             }
-            else if (hashedKey == LivingCellRedKey) {
+            else if (key == "LivingCellRed") {
                 if (value.ToLong(&val)) livingCellRed = static_cast<int>(val);
             }
-            else if (hashedKey == LivingCellGreenKey) {
+            else if (key == "LivingCellGreen") {
                 if (value.ToLong(&val)) livingCellGreen = static_cast<int>(val);
             }
-            else if (hashedKey == LivingCellBlueKey) {
+            else if (key == "LivingCellBlue") {
                 if (value.ToLong(&val)) livingCellBlue = static_cast<int>(val);
             }
-            else if (hashedKey == LivingCellAlphaKey) {
+            else if (key == "LivingCellAlpha") {
                 if (value.ToLong(&val)) livingCellAlpha = static_cast<int>(val);
             }
-            else if (hashedKey == DeadCellRedKey) {
+            else if (key == "DeadCellRed") {
                 if (value.ToLong(&val)) deadCellRed = static_cast<int>(val);
             }
-            else if (hashedKey == DeadCellGreenKey) {
+            else if (key == "DeadCellGreen") {
                 if (value.ToLong(&val)) deadCellGreen = static_cast<int>(val);
             }
-            else if (hashedKey == DeadCellBlueKey) {
+            else if (key == "DeadCellBlue") {
                 if (value.ToLong(&val)) deadCellBlue = static_cast<int>(val);
             }
-            else if (hashedKey == DeadCellAlphaKey) {
+            else if (key == "DeadCellAlpha") {
                 if (value.ToLong(&val)) deadCellAlpha = static_cast<int>(val);
             }
-            else if (hashedKey == ShowNeighborCountKey) {
-                if (value.ToLong(&val)) showNeighborCount = static_cast<int>(val);
+            else if (key == "ShowNeighborCount") {
+                if (value.ToLong(&val)) showNeighborCount = (val != 0);
             }
         }
     }
 
 
-    void Save() const {
+    /*void Save() const {
         std::ofstream file("settings.bin", std::ios::out | std::ios::binary);
         if (file.is_open()) {
             file.write((const char*)this, sizeof(GameSettings));
@@ -130,7 +130,7 @@ struct GameSettings {
             file.read((char*)this, sizeof(GameSettings));
             file.close();
         }
-    }
+    }*/
 
     wxColor GetLivingCellColor() const {
         return wxColor(livingCellRed, livingCellGreen, livingCellBlue, livingCellAlpha);
